@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title id="page-title">Product — Biker's Hub</title>
+  <meta name="description" content="Premium riding gear product detail. Biker's Hub Mumbai."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .product-page { padding: calc(var(--nav-h) + 3rem) 0 5rem; background:var(--bg); min-height:100vh; }
+    .breadcrumb { display:flex; align-items:center; gap:8px; margin-bottom:2.5rem; }
+    .breadcrumb a, .breadcrumb span { font-size:.72rem; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; }
+    .breadcrumb strong { font-size:.72rem; color:var(--accent); text-transform:uppercase; letter-spacing:2px; }
+
+    .product-layout { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+    @media(max-width:860px) { .product-layout { grid-template-columns:1fr; gap:2.5rem; } }
+
+    /* Image side */
+    .product-img-main {
+      border-radius:20px; overflow:hidden;
+      border:1px solid var(--border); background:var(--bg-3);
+      position:relative; aspect-ratio:1;
+    }
+    .product-img-main img { width:100%; height:100%; object-fit:cover; }
+    .product-img-main .cert-overlay {
+      position:absolute; top:16px; left:16px; display:flex; gap:6px; flex-wrap:wrap;
+    }
+    .cert-chip { padding:5px 10px; background:rgba(18,18,18,.9); border:1px solid var(--border-accent); border-radius:6px; font-size:.65rem; font-weight:700; color:var(--accent); letter-spacing:1px; backdrop-filter:blur(8px); }
+    .product-img-glow { position:absolute; bottom:-40px; left:50%; transform:translateX(-50%); width:70%; height:80px; background:radial-gradient(ellipse,rgba(255,87,34,.25),transparent 70%); pointer-events:none; }
+
+    /* Info side */
+    .product-brand-tag { font-size:.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:.75rem; }
+    .product-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,5vw,3.2rem); letter-spacing:2px; line-height:1; margin-bottom:1rem; }
+    .product-rating { display:flex; align-items:center; gap:10px; margin-bottom:1.25rem; }
+    .rating-stars { color:#FFD700; font-size:1rem; letter-spacing:2px; }
+    .rating-count { font-size:.82rem; color:var(--text-3); }
+    .product-price-big { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:var(--accent); letter-spacing:2px; margin-bottom:1.75rem; line-height:1; }
+    .product-desc { color:var(--text-2); line-height:1.8; font-size:.9rem; margin-bottom:2rem; }
+
+    /* Options */
+    .option-group { margin-bottom:1.5rem; }
+    .option-label { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-3); margin-bottom:.6rem; }
+    .option-chips { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .opt-chip { padding:8px 16px; border:1px solid var(--border); border-radius:8px; font-size:.8rem; font-weight:600; color:var(--text-2); cursor:pointer; transition:var(--transition); background:var(--glass); }
+    .opt-chip:hover { border-color:var(--accent); color:var(--accent); }
+    .opt-chip.active { border-color:var(--accent); color:var(--accent); background:rgba(255,87,34,.1); }
+    .opt-chip.disabled { opacity:.35; cursor:not-allowed; pointer-events:none; }
+
+    .color-chips { display:flex; gap:.5rem; }
+    .color-chip { width:32px; height:32px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:border-color .2s; }
+    .color-chip.active { border-color:var(--accent); box-shadow:0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
+
+    /* Qty */
+    .qty-wrap { display:flex; align-items:center; gap:0; margin-bottom:1.5rem; }
+    .qty-btn { width:40px; height:40px; background:var(--bg-3); border:1px solid var(--border); color:var(--text); font-size:1.2rem; cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; }
+    .qty-btn:first-child { border-radius:8px 0 0 8px; }
+    .qty-btn:last-child  { border-radius:0 8px 8px 0; }
+    .qty-btn:hover { background:rgba(255,87,34,.1); border-color:var(--accent); color:var(--accent); }
+    .qty-num { width:50px; height:40px; background:var(--bg-3); border-top:1px solid var(--border); border-bottom:1px solid var(--border); text-align:center; color:var(--text); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+
+    .add-to-cart-btn {
+      width:100%; padding:16px; background:var(--accent); color:#fff;
+      border-radius:10px; font-weight:800; font-size:1rem; letter-spacing:1px;
+      text-transform:uppercase; border:none; cursor:pointer;
+      transition:var(--transition); margin-bottom:.75rem;
+      box-shadow:0 4px 24px rgba(255,87,34,.35);
+    }
+    .add-to-cart-btn:hover { background:#E64A19; transform:translateY(-2px); box-shadow:0 8px 32px rgba(255,87,34,.5); }
+    .buy-now-btn {
+      width:100%; padding:14px; background:transparent; color:var(--text);
+      border:1.5px solid var(--border); border-radius:10px;
+      font-weight:700; font-size:.9rem; letter-spacing:1px; text-transform:uppercase;
+      cursor:pointer; transition:var(--transition); text-align:center; display:block;
+    }
+    .buy-now-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+    .trust-badges { display:flex; gap:1rem; margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+    .trust-badge { display:flex; align-items:center; gap:6px; font-size:.75rem; color:var(--text-3); }
+    .trust-badge span { font-size:1rem; }
+
+    /* Specs table */
+    .specs-section { margin-top:4rem; padding-top:4rem; border-top:1px solid var(--border); }
+    .specs-section h3 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:3px; margin-bottom:1.5rem; }
+    .specs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:.75rem; }
+    @media(max-width:640px) { .specs-grid { grid-template-columns:1fr; } }
+    .spec-row { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1rem; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; }
+    .spec-key { font-size:.78rem; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+    .spec-val { font-size:.85rem; color:var(--text); font-weight:600; text-align:right; max-width:60%; }
+
+    /* Related */
+    .related-section { margin-top:5rem; }
+    .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; margin-top:1.5rem; }
+    .rel-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; cursor:pointer; transition:var(--transition); }
+    .rel-card:hover { border-color:var(--border-accent); transform:translateY(-4px); }
+    .rel-img { aspect-ratio:1; overflow:hidden; background:var(--bg-3); }
+    .rel-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+    .rel-card:hover .rel-img img { transform:scale(1.06); }
+    .rel-info { padding:.75rem; }
+    .rel-brand { font-size:.6rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
+    .rel-name { font-size:.85rem; font-weight:700; margin:.25rem 0; }
+    .rel-price { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--accent); }
+
+    /* Toast notification */
+    .toast {
+      position:fixed; bottom:2rem; right:2rem; z-index:9999;
+      background:var(--bg-2); border:1px solid var(--border-accent);
+      border-radius:12px; padding:1rem 1.25rem;
+      display:flex; align-items:center; gap:12px;
+      transform:translateY(100px); opacity:0;
+      transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
+      backdrop-filter:blur(12px);
+      box-shadow:0 8px 32px rgba(0,0,0,.5);
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast-icon { font-size:1.5rem; }
+    .toast-text strong { display:block; font-size:.9rem; margin-bottom:2px; }
+    .toast-text span { font-size:.78rem; color:var(--text-3); }
+    .toast-action { padding:8px 14px; background:var(--accent); color:#fff; border-radius:7px; font-size:.75rem; font-weight:700; white-space:nowrap; }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="navbar-placeholder"></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">✅</div>
+    <div class="toast-text">
+      <strong>Added to Cart!</strong>
+      <span id="toast-product-name">Product</span>
+    </div>
+    <a href="cart.html" class="toast-action">View Cart →</a>
+  </div>
+
+  <div class="product-page">
+    <div class="container">
+      <div class="breadcrumb" id="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <a href="#" id="bc-cat">Category</a>
+        <span>›</span>
+        <strong id="bc-name">Product</strong>
+      </div>
+
+      <div class="product-layout">
+        <!-- Image -->
+        <div>
+          <div class="product-img-main">
+            <img src="" alt="" id="product-img"/>
+            <div class="cert-overlay" id="cert-overlay"></div>
+            <div class="product-img-glow"></div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div>
+          <div class="product-brand-tag" id="p-brand"></div>
+          <h1 class="product-title" id="p-name"></h1>
+          <div class="product-rating">
+            <span class="rating-stars" id="p-stars"></span>
+            <span class="rating-count" id="p-reviews"></span>
+          </div>
+          <div class="product-price-big" id="p-price"></div>
+          <p class="product-desc" id="p-desc"></p>
+
+          <!-- Size -->
+          <div class="option-group" id="size-group">
+            <div class="option-label">Size — <span id="selected-size" style="color:var(--accent)">M</span></div>
+            <div class="option-chips" id="size-chips"></div>
+          </div>
+
+          <!-- Color -->
+          <div class="option-group" id="color-group">
+            <div class="option-label">Color — <span id="selected-color" style="color:var(--accent)">-</span></div>
+            <div class="option-chips" id="color-chips"></div>
+          </div>
+
+          <!-- Qty -->
+          <div class="option-label" style="margin-bottom:.6rem;">Quantity</div>
+          <div class="qty-wrap" style="margin-bottom:1.5rem;">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <div class="qty-num" id="qty-display">1</div>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+
+          <button class="add-to-cart-btn" id="add-cart-btn" onclick="doAddToCart()">
+            🛒 Add to Cart
+          </button>
+          <a class="buy-now-btn" href="cart.html" id="buy-now-btn" onclick="doAddToCart()">
+            Buy Now — Visit Store
+          </a>
+
+          <div class="trust-badges">
+            <div class="trust-badge"><span>🛡️</span> Genuine Product</div>
+            <div class="trust-badge"><span>🔄</span> Easy Returns</div>
+            <div class="trust-badge"><span>🚚</span> Same-day Delivery</div>
+            <div class="trust-badge"><span>📞</span> Expert Advice</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="specs-section">
+        <h3>Specifications</h3>
+        <div class="specs-grid" id="specs-grid"></div>
+      </div>
+
+      <!-- Related -->
+      <div class="related-section">
+        <h2 class="section-title" style="font-size:2rem;">You May Also <span class="accent">Like</span></h2>
+        <div class="related-grid" id="related-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" style="padding:2rem 0;">
+    <div class="container" style="text-align:center;">
+      <p style="color:var(--text-3);font-size:.8rem;">© 2025 Biker's Hub · <a href="index.html" style="color:var(--accent);">Home</a> · <a href="cart.html" style="color:var(--accent);">Cart</a></p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    BH.initPage('');
+
+    const params  = new URLSearchParams(location.search);
+    const id      = params.get('id');
+    const product = BH.getProductById(id);
+    let selectedSize  = 'M';
+    let selectedColor = '';
+    let qty = 1;
+
+    if (!product) {
+      document.querySelector('.product-page').innerHTML = '<div class="container" style="text-align:center;padding:6rem 0;"><h2>Product not found</h2><a href="index.html" class="btn btn-primary" style="margin-top:1rem;display:inline-block;">Back to Home</a></div>';
+    } else {
+      document.title = `${product.name} — Biker's Hub`;
+      document.getElementById('page-title').textContent = `${product.name} — Biker's Hub`;
+
+      // Breadcrumb
+      const catLabel = product.category === 'helmet' ? 'Helmets' : product.category === 'jacket' ? 'Jackets' : 'Gloves';
+      const catHref  = product.category === 'helmet' ? 'helmets.html' : product.category === 'jacket' ? 'jackets.html' : 'gloves.html';
+      document.getElementById('bc-cat').href = catHref;
+      document.getElementById('bc-cat').textContent = catLabel;
+      document.getElementById('bc-name').textContent = product.name;
+
+      // Main fields
+      document.getElementById('product-img').src = product.img;
+      document.getElementById('product-img').alt = product.name;
+      document.getElementById('p-brand').textContent  = product.brand;
+      document.getElementById('p-name').textContent   = product.name;
+      document.getElementById('p-price').textContent  = product.display;
+      document.getElementById('p-desc').textContent   = product.desc;
+      document.getElementById('p-stars').textContent  = '★'.repeat(Math.floor(product.rating)) + '☆'.repeat(5 - Math.floor(product.rating));
+      document.getElementById('p-reviews').textContent = `${product.rating} · ${product.reviews} reviews`;
+
+      // Certs
+      document.getElementById('cert-overlay').innerHTML = product.cert.map(c => `<span class="cert-chip">${c}</span>`).join('');
+
+      // Sizes
+      selectedSize = product.sizes[Math.floor(product.sizes.length/2)] || 'M';
+      document.getElementById('selected-size').textContent = selectedSize;
+      document.getElementById('size-chips').innerHTML = product.sizes.map(s =>
+        `<div class="opt-chip${s===selectedSize?' active':''}" onclick="selectSize('${s}',this)">${s}</div>`
+      ).join('');
+
+      // Colors
+      const colorMap = { 'Matte Black':'#2A2A2A','Gloss Black':'#111','Pearl White':'#F0EDE6','Matt Titanium':'#6B7280','Gunmetal':'#4B5563','Black':'#1A1A1A','White':'#F5F5F5','Red':'#D32F2F','Blue':'#1565C0','Yellow':'#F9A825','Orange/Black':'#E64A19','Brown':'#795548','Grey':'#616161','Navy Blue':'#1A237E','Carbon Black':'#0D0D0D','Carbon Red':'#B71C1C','Black/Orange':'#1A1A1A','Black/Blue':'#1A1A1A','Black/Red':'#1A1A1A','Hi-Viz Yellow':'#FFEB3B','Green':'#388E3C' };
+      selectedColor = product.colors[0];
+      document.getElementById('selected-color').textContent = selectedColor;
+      document.getElementById('color-chips').innerHTML = product.colors.map(c =>
+        `<div class="opt-chip${c===selectedColor?' active':''}" onclick="selectColor('${c}',this)">${c}</div>`
+      ).join('');
+
+      // Specs
+      document.getElementById('specs-grid').innerHTML = Object.entries(product.specs).map(([k,v]) =>
+        `<div class="spec-row"><span class="spec-key">${k}</span><span class="spec-val">${v}</span></div>`
+      ).join('');
+
+      // Related products (same category, different id)
+      const related = BH.CATALOG.filter(p => p.category === product.category && p.id !== product.id).slice(0,4);
+      document.getElementById('related-grid').innerHTML = related.map(p =>
+        `<div class="rel-card" onclick="location.href='product.html?id=${p.id}'">
+          <div class="rel-img"><img src="${p.img}" alt="${p.name}" loading="lazy"/></div>
+          <div class="rel-info">
+            <div class="rel-brand">${p.brand}</div>
+            <div class="rel-name">${p.name}</div>
+            <div class="rel-price">${p.display}</div>
+          </div>
+        </div>`
+      ).join('');
+    }
+
+    function selectSize(s, el) {
+      selectedSize = s;
+      document.getElementById('selected-size').textContent = s;
+      document.querySelectorAll('#size-chips .opt-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectColor(c, el) {
+      selectedColor = c;
+      document.getElementById('selected-color').textContent = c;
+      document.querySelectorAll('#color-chips .opt-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function changeQty(delta) {
+      qty = Math.max(1, Math.min(10, qty + delta));
+      document.getElementById('qty-display').textContent = qty;
+    }
+
+    function doAddToCart() {
+      if (!product) return;
+      for (let i = 0; i < qty; i++) BH.addToCart(product.id, selectedSize, selectedColor);
+      showToast(product.name);
+    }
+
+    function showToast(name) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-product-name').textContent = name;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+  </script>
+</body>
+</html>

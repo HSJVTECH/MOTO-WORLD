@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Riding Jackets — Biker's Hub Mumbai | Rynox, Raida, Scala</title>
+  <meta name="description" content="Premium motorcycle riding jackets in Mumbai. Leather, textile and mesh jackets from Rynox, Raida, Scala. CE armor protection. Biker's Hub stores."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .page-hero {
+      min-height: 50vh; display:flex; align-items:center;
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, #0A0A0A 0%, #1A0800 40%, #0D0D0D 100%);
+      padding: calc(var(--nav-h) + 3rem) 0 4rem;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 80% at 30% 50%, rgba(255,87,34,0.14) 0%, transparent 70%);
+    }
+    .page-hero::after {
+      content:'JACKETS'; position:absolute; right:-2%; top:50%;
+      transform:translateY(-50%);
+      font-family:'Bebas Neue',sans-serif; font-size:clamp(8rem,15vw,14rem);
+      color:rgba(255,87,34,0.04); letter-spacing:8px; pointer-events:none;
+      white-space:nowrap;
+    }
+    .page-hero-content { position:relative; z-index:2; }
+    .breadcrumb { display:flex; align-items:center; gap:8px; margin-bottom:1.25rem; }
+    .breadcrumb a, .breadcrumb span { font-size:.72rem; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; }
+    .breadcrumb strong { font-size:.72rem; color:var(--accent); text-transform:uppercase; letter-spacing:2px; }
+    .page-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,9vw,6.5rem); letter-spacing:3px; line-height:.9; margin-bottom:1rem; }
+    .page-hero p { color:var(--text-2); font-size:1rem; max-width:480px; line-height:1.7; }
+    .hero-tags { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1.5rem; }
+    .hero-tag { padding:6px 14px; border:1px solid var(--border); border-radius:20px; font-size:.72rem; color:var(--text-2); cursor:pointer; transition:var(--transition); }
+    .hero-tag:hover, .hero-tag.active { border-color:var(--accent); color:var(--accent); background:rgba(255,87,34,.06); }
+
+    /* Magazine layout for jackets */
+    .jacket-featured { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:1.25rem; margin-bottom:1.5rem; }
+    .jacket-featured .prod-card:first-child { grid-row: span 2; }
+    .jacket-featured .prod-card:first-child .prod-img { aspect-ratio: 2/3; }
+    @media(max-width:900px) { .jacket-featured { grid-template-columns:1fr 1fr; } .jacket-featured .prod-card:first-child { grid-row:span 1; } .jacket-featured .prod-card:first-child .prod-img { aspect-ratio:1; } }
+    @media(max-width:600px) { .jacket-featured { grid-template-columns:1fr; } }
+
+    /* Reuse prod-card styles from helmets */
+    .prod-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius); overflow:hidden;
+      transition:var(--transition); cursor:pointer;
+      position:relative; backdrop-filter:blur(10px);
+    }
+    .prod-card:hover { transform:translateY(-6px); border-color:var(--border-accent); box-shadow:0 20px 48px rgba(0,0,0,.5),var(--shadow-glow); }
+    .prod-img { aspect-ratio:1; overflow:hidden; background:var(--bg-3); position:relative; }
+    .prod-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .prod-card:hover .prod-img img { transform:scale(1.08); }
+    .prod-badges { position:absolute; top:10px; left:10px; display:flex; gap:4px; flex-wrap:wrap; }
+    .prod-badge { font-size:.58rem; font-weight:700; padding:3px 7px; border-radius:4px; background:rgba(18,18,18,.9); border:1px solid rgba(255,87,34,.3); color:var(--accent); backdrop-filter:blur(6px); letter-spacing:.5px; }
+    .prod-info { padding:1rem 1rem .5rem; }
+    .prod-brand { font-size:.65rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+    .prod-name { font-weight:700; font-size:.95rem; color:var(--text); margin-bottom:6px; line-height:1.3; }
+    .prod-type { font-size:.72rem; color:var(--text-3); margin-bottom:6px; }
+    .prod-stars { color:#FFD700; font-size:.75rem; letter-spacing:1px; }
+    .prod-stars span { color:var(--text-3); margin-left:4px; }
+    .prod-footer { display:flex; align-items:center; justify-content:space-between; padding:.75rem 1rem 1rem; }
+    .prod-price { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--accent); }
+    .prod-actions { display:flex; gap:.5rem; }
+    .btn-view { padding:8px 14px; border:1px solid var(--border); border-radius:7px; font-size:.72rem; font-weight:700; color:var(--text-2); transition:var(--transition); text-decoration:none; display:inline-block; }
+    .btn-view:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-cart { padding:8px 14px; background:var(--accent); border-radius:7px; font-size:.72rem; font-weight:700; color:#fff; transition:var(--transition); border:none; cursor:pointer; }
+    .btn-cart:hover { background:#E64A19; }
+
+    .section-label { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:3px; color:var(--text); margin-bottom:1.25rem; display:flex; align-items:center; gap:12px; }
+    .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* Type filter tabs */
+    .type-tabs { display:flex; gap:.6rem; margin-bottom:2rem; flex-wrap:wrap; }
+    .type-tab { padding:8px 18px; border:1px solid var(--border); border-radius:20px; font-size:.78rem; font-weight:600; color:var(--text-2); cursor:pointer; transition:var(--transition); background:var(--glass); }
+    .type-tab:hover, .type-tab.active { border-color:var(--accent); color:var(--accent); background:rgba(255,87,34,.06); }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="navbar-placeholder"></div>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-content">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a><span>›</span><strong>Riding Jackets</strong>
+        </div>
+        <h1>RIDING<br/><span class="accent">JACKETS</span></h1>
+        <p>CE Level 1 & 2 armored riding jackets for every style — leather, textile, and mesh. Prices from ₹3,900.</p>
+        <div class="hero-tags" id="type-tabs">
+          <span class="hero-tag active" data-type="all" onclick="filterType(this,'all')">All Jackets</span>
+          <span class="hero-tag" data-type="Leather" onclick="filterType(this,'Leather')">Leather</span>
+          <span class="hero-tag" data-type="Textile" onclick="filterType(this,'Textile')">Textile</span>
+          <span class="hero-tag" data-type="Mesh" onclick="filterType(this,'Mesh')">Mesh</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section class="section-pad" style="background:var(--bg);">
+    <div class="container">
+      <div class="section-label">All Jackets</div>
+
+      <!-- Sort bar -->
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+        <select class="sort-select" id="sort-select" onchange="renderGrid()" style="padding:9px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:.8rem;cursor:pointer;outline:none;">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+
+      <div class="jacket-featured" id="product-grid"></div>
+    </div>
+  </section>
+
+  <!-- WHY US STRIP -->
+  <section style="background:var(--bg-2);padding:3rem 0;border-top:1px solid var(--border);">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center;">
+        <div><div style="font-size:2rem;margin-bottom:.5rem;">🛡️</div><strong>CE Armor</strong><p style="font-size:.8rem;color:var(--text-2);margin-top:.25rem;">Level 1 & 2 protection included</p></div>
+        <div><div style="font-size:2rem;margin-bottom:.5rem;">🌧️</div><strong>Waterproof Options</strong><p style="font-size:.8rem;color:var(--text-2);margin-top:.25rem;">Stay dry on unexpected rides</p></div>
+        <div><div style="font-size:2rem;margin-bottom:.5rem;">✂️</div><strong>Expert Fitting</strong><p style="font-size:.8rem;color:var(--text-2);margin-top:.25rem;">Try before you buy in store</p></div>
+        <div><div style="font-size:2rem;margin-bottom:.5rem;">🚚</div><strong>Same-day Delivery</strong><p style="font-size:.8rem;color:var(--text-2);margin-top:.25rem;">Available in Mumbai</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="padding:2rem 0;">
+    <div class="container" style="text-align:center;">
+      <p style="color:var(--text-3);font-size:.8rem;">© 2025 Biker's Hub · <a href="index.html" style="color:var(--accent);">Home</a> · <a href="cart.html" style="color:var(--accent);">Cart</a></p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    BH.initPage('jackets');
+    const jackets = BH.getByCategory('jacket');
+    let activeType = 'all';
+
+    function filterType(el, type) {
+      document.querySelectorAll('.hero-tag').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      activeType = type;
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const sort = document.getElementById('sort-select')?.value || 'default';
+      let data = activeType === 'all' ? [...jackets] : jackets.filter(j => j.type === activeType);
+      if (sort === 'price-asc')  data.sort((a,b) => a.price-b.price);
+      if (sort === 'price-desc') data.sort((a,b) => b.price-a.price);
+      if (sort === 'rating')     data.sort((a,b) => b.rating-a.rating);
+
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = data.map(p => `
+        <div class="prod-card" onclick="location.href='product.html?id=${p.id}'">
+          <div class="prod-img">
+            <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+            <div class="prod-badges"><span class="prod-badge">${p.type}</span></div>
+            <button class="prod-wishlist" onclick="event.stopPropagation();this.classList.toggle('active');this.textContent=this.classList.contains('active')?'♥':'♡'" aria-label="Wishlist" style="position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(18,18,18,.85);display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1rem;transition:var(--transition);border:1px solid var(--border);cursor:pointer;">♡</button>
+          </div>
+          <div class="prod-info">
+            <div class="prod-brand">${p.brand}</div>
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-type">${p.type} Jacket</div>
+            <div class="prod-stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))} <span>(${p.reviews})</span></div>
+          </div>
+          <div class="prod-footer">
+            <div class="prod-price">${p.display}</div>
+            <div class="prod-actions">
+              <a class="btn-view" href="product.html?id=${p.id}" onclick="event.stopPropagation()">View</a>
+              <button class="btn-cart" onclick="event.stopPropagation();quickAdd('${p.id}',this)">+ Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function quickAdd(id, btn) {
+      BH.addToCart(id);
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      btn.style.background = '#4CAF50';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1400);
+    }
+
+    renderGrid();
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Order Confirmed! — Biker's Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .success-page { min-height:100vh; background:var(--bg); display:flex; align-items:center; justify-content:center; padding:calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
+    .success-wrap { max-width:680px; width:100%; }
+
+    /* Animated checkmark */
+    .success-icon-wrap { text-align:center; margin-bottom:2rem; position:relative; }
+    .success-circle {
+      width:100px; height:100px; border-radius:50%;
+      background:radial-gradient(circle, rgba(76,175,80,.15) 0%, transparent 70%);
+      border:2px solid rgba(76,175,80,.3);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 1rem;
+      animation:success-pop .6s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    @keyframes success-pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+    .check-svg { animation:draw-check .5s ease .4s both; }
+    @keyframes draw-check { from{stroke-dashoffset:100} to{stroke-dashoffset:0} }
+
+    .confetti-wrap { position:absolute; top:0; left:0; right:0; pointer-events:none; }
+    .confetti-piece {
+      position:absolute; width:8px; height:8px; opacity:0;
+      animation:confetti-fall var(--dur, 2s) ease var(--delay, 0s) forwards;
+    }
+    @keyframes confetti-fall {
+      0%  { transform:translateY(-20px) rotate(0deg); opacity:1; }
+      100%{ transform:translateY(200px) rotate(720deg); opacity:0; }
+    }
+
+    .success-heading { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,6vw,4rem); letter-spacing:3px; text-align:center; margin-bottom:.5rem; }
+    .success-sub { text-align:center; color:var(--text-2); font-size:1rem; margin-bottom:2.5rem; line-height:1.7; }
+
+    /* Order card */
+    .order-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; backdrop-filter:blur(12px); margin-bottom:1.5rem; animation:fade-up-in .6s ease .3s both; }
+    .order-card-header { padding:1.25rem 1.5rem; background:rgba(255,87,34,.05); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; }
+    .order-id { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:2px; color:var(--accent); }
+    .order-status { display:flex; align-items:center; gap:6px; font-size:.78rem; font-weight:600; color:#4CAF50; }
+    .status-dot { width:8px; height:8px; background:#4CAF50; border-radius:50%; animation:blink 1.5s ease-in-out infinite; }
+    .order-card-body { padding:1.5rem; }
+    .order-items { display:flex; flex-direction:column; gap:.75rem; margin-bottom:1.25rem; }
+    .oi-row { display:flex; gap:.75rem; align-items:center; }
+    .oi-img { width:52px; height:52px; border-radius:8px; object-fit:cover; background:var(--bg-3); flex-shrink:0; }
+    .oi-info { flex:1; }
+    .oi-name { font-weight:700; font-size:.88rem; }
+    .oi-meta { font-size:.72rem; color:var(--text-3); margin-top:2px; }
+    .oi-price { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--accent); }
+
+    .order-meta-grid { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; padding-top:1.25rem; border-top:1px solid var(--border); }
+    @media(max-width:600px) { .order-meta-grid { grid-template-columns:1fr; } }
+    .meta-block { background:var(--glass); border:1px solid var(--border); border-radius:8px; padding:.85rem 1rem; }
+    .meta-label { font-size:.62rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-3); margin-bottom:.35rem; }
+    .meta-val { font-size:.88rem; color:var(--text); line-height:1.5; }
+
+    .order-total-bar { display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; background:rgba(255,87,34,.04); border-top:1px solid rgba(255,87,34,.1); }
+    .total-label { font-size:.82rem; color:var(--text-2); }
+    .total-val { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--accent); }
+
+    /* CTA buttons */
+    .success-ctas { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.5rem; animation:fade-up-in .6s ease .5s both; }
+
+    /* Estimated delivery */
+    .delivery-track { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; animation:fade-up-in .6s ease .4s both; }
+    .delivery-track h3 { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; margin-bottom:1.25rem; }
+    .track-steps { display:flex; flex-direction:column; gap:0; position:relative; }
+    .track-step { display:flex; align-items:flex-start; gap:1rem; padding-bottom:1.25rem; position:relative; }
+    .track-step::before { content:''; position:absolute; left:14px; top:30px; width:2px; height:100%; background:var(--border); }
+    .track-step:last-child::before { display:none; }
+    .ts-dot { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.8rem; flex-shrink:0; border:2px solid var(--border); color:var(--text-3); }
+    .ts-dot.done { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .ts-dot.active { border-color:var(--accent); color:var(--accent); animation:blink 1.5s ease-in-out infinite; }
+    .ts-info strong { display:block; font-size:.88rem; margin-bottom:2px; }
+    .ts-info span { font-size:.75rem; color:var(--text-3); }
+
+    /* Store info */
+    .store-cta { background:linear-gradient(135deg,rgba(255,87,34,.08),rgba(255,87,34,.02)); border:1px solid rgba(255,87,34,.15); border-radius:var(--radius); padding:1.5rem; text-align:center; animation:fade-up-in .6s ease .6s both; }
+    .store-cta h4 { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; margin-bottom:.5rem; }
+    .store-cta p { font-size:.85rem; color:var(--text-2); margin-bottom:1rem; }
+
+    @keyframes fade-up-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="navbar-placeholder"></div>
+
+  <div class="success-page">
+    <div class="success-wrap">
+
+      <!-- Animated icon -->
+      <div class="success-icon-wrap">
+        <div class="confetti-wrap" id="confetti"></div>
+        <div class="success-circle">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <polyline class="check-svg" points="8,22 18,33 36,12" fill="none" stroke="#4CAF50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100" stroke-dashoffset="0"/>
+          </svg>
+        </div>
+      </div>
+
+      <h1 class="success-heading">ORDER <span class="accent">CONFIRMED!</span></h1>
+      <p class="success-sub" id="success-sub">
+        Thank you for your order! We'll process it right away.
+      </p>
+
+      <!-- Order card -->
+      <div class="order-card">
+        <div class="order-card-header">
+          <div>
+            <div style="font-size:.65rem;color:var(--text-3);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Order ID</div>
+            <div class="order-id" id="order-id">BH00000000</div>
+          </div>
+          <div class="order-status">
+            <div class="status-dot"></div>
+            Order Confirmed
+          </div>
+        </div>
+
+        <div class="order-card-body">
+          <div class="order-items" id="order-items"></div>
+
+          <div class="order-meta-grid">
+            <div class="meta-block">
+              <div class="meta-label">Deliver to</div>
+              <div class="meta-val" id="meta-address">—</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Payment</div>
+              <div class="meta-val" id="meta-payment">—</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Estimated Delivery</div>
+              <div class="meta-val" id="meta-delivery">—</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Contact</div>
+              <div class="meta-val">📞 <a href="tel:+919920577747" style="color:var(--accent);">099205 77747</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-total-bar">
+          <div class="total-label">Order Total</div>
+          <div class="total-val" id="order-total">₹0</div>
+        </div>
+      </div>
+
+      <!-- Delivery tracking -->
+      <div class="delivery-track">
+        <h3>Order Status</h3>
+        <div class="track-steps">
+          <div class="track-step">
+            <div class="ts-dot done">✓</div>
+            <div class="ts-info"><strong>Order Placed</strong><span id="ts-date">Just now</span></div>
+          </div>
+          <div class="track-step">
+            <div class="ts-dot active">⚡</div>
+            <div class="ts-info"><strong>Processing & Packing</strong><span>Our team is packing your order</span></div>
+          </div>
+          <div class="track-step">
+            <div class="ts-dot">🚚</div>
+            <div class="ts-info"><strong>Out for Delivery</strong><span id="ts-dispatch">Expected today</span></div>
+          </div>
+          <div class="track-step">
+            <div class="ts-dot">🏠</div>
+            <div class="ts-info"><strong>Delivered</strong><span id="ts-deliver">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="success-ctas">
+        <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="helmets.html" class="btn btn-ghost">Browse Helmets</a>
+      </div>
+
+      <!-- Store CTA -->
+      <div class="store-cta">
+        <h4>Visit Us in Store</h4>
+        <p>Can't wait? Pick up from our Kandivali West, Kharghar or Grant Road store today!</p>
+        <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+          <a href="index.html#stores" class="btn btn-primary" style="padding:10px 20px;font-size:.82rem;">Find Stores</a>
+          <a href="tel:+919920577747" class="btn btn-ghost" style="padding:10px 20px;font-size:.82rem;">📞 Call Now</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    BH.initPage('');
+
+    const orderData = JSON.parse(sessionStorage.getItem('bh_order') || '{}');
+
+    if (!orderData.orderId) {
+      document.querySelector('.success-wrap').innerHTML = `
+        <div style="text-align:center;padding:3rem;">
+          <h2>No order found</h2>
+          <a href="index.html" class="btn btn-primary" style="display:inline-block;margin-top:1rem;">Go Home</a>
+        </div>`;
+    } else {
+      // Populate
+      document.getElementById('order-id').textContent = orderData.orderId;
+
+      const d = orderData.delivery || {};
+      document.getElementById('success-sub').textContent = `Thank you, ${d.first}! Your order has been confirmed and will be delivered soon.`;
+
+      // Items
+      document.getElementById('order-items').innerHTML = (orderData.cart || []).map(i => `
+        <div class="oi-row">
+          <img src="${i.img}" class="oi-img" alt="${i.name}"/>
+          <div class="oi-info">
+            <div class="oi-name">${i.name}</div>
+            <div class="oi-meta">${i.brand} · Size: ${i.size} · Qty: ${i.qty}</div>
+          </div>
+          <div class="oi-price">₹${(i.price*i.qty).toLocaleString('en-IN')}</div>
+        </div>
+      `).join('');
+
+      // Meta
+      document.getElementById('meta-address').innerHTML = `${d.first} ${d.last}<br/>${d.addr}<br/>${d.city} - ${d.pin}`;
+      const pmLabels = { upi:'UPI Payment ✓', card:'Card Payment ✓', cod:'Cash on Delivery' };
+      document.getElementById('meta-payment').textContent = pmLabels[orderData.method] || '—';
+      document.getElementById('order-total').textContent  = '₹' + (orderData.total || 0).toLocaleString('en-IN');
+
+      // Dates
+      const now = new Date();
+      const est = new Date(now.getTime() + 86400000 * (d.delivery === 'express' ? 0 : 2));
+      document.getElementById('ts-date').textContent   = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+      document.getElementById('ts-dispatch').textContent = d.delivery === 'express' ? 'Today' : 'Tomorrow';
+      document.getElementById('ts-deliver').textContent = est.toLocaleDateString('en-IN', { weekday:'long', month:'short', day:'numeric' });
+      document.getElementById('meta-delivery').textContent = est.toLocaleDateString('en-IN', { weekday:'long', month:'long', day:'numeric' });
+    }
+
+    // Confetti
+    function launchConfetti() {
+      const wrap = document.getElementById('confetti');
+      const colors = ['#FF5722','#FF8A50','#FFC107','#4CAF50','#2196F3','#9C27B0'];
+      for (let i = 0; i < 30; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        el.style.cssText = `
+          left:${Math.random()*100}%; top:0;
+          background:${color}; border-radius:${Math.random()>0.5?'50%':'2px'};
+          width:${6+Math.random()*6}px; height:${6+Math.random()*6}px;
+          --dur:${1.5+Math.random()*1.5}s;
+          --delay:${Math.random()*0.5}s;
+        `;
+        wrap.appendChild(el);
+      }
+    }
+
+    setTimeout(launchConfetti, 300);
+
+    // Clear order from session after display
+    setTimeout(() => sessionStorage.removeItem('bh_order'), 5000);
+  </script>
+</body>
+</html>

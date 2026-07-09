@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Helmets — Biker's Hub Mumbai | ECE 22.06, DOT, BIS Certified</title>
+  <meta name="description" content="Buy premium motorcycle helmets in Mumbai. SMK, Axor, LS2, Vega, Steelbird, Studds. ECE 22.06, DOT & BIS certified. Visit Kandivali, Kharghar or Grant Road."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Helmets page specific ── */
+    .page-hero {
+      min-height: 42vh; display:flex; align-items:center;
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, #0D0D0D 0%, #1A0A00 50%, #121212 100%);
+      padding: calc(var(--nav-h) + 3rem) 0 4rem;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,87,34,0.18) 0%, transparent 70%);
+    }
+    .page-hero-content { position:relative; z-index:2; }
+    .page-hero-eyebrow { display:flex; align-items:center; gap:12px; margin-bottom:1rem; }
+    .page-hero-eyebrow a { font-size:.75rem; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; }
+    .page-hero-eyebrow span { color:var(--text-3); }
+    .page-hero-eyebrow strong { font-size:.75rem; color:var(--accent); text-transform:uppercase; letter-spacing:2px; }
+    .page-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,8vw,6rem); letter-spacing:4px; line-height:.95; margin-bottom:1rem; }
+    .page-hero p { color:var(--text-2); font-size:1rem; max-width:500px; line-height:1.7; }
+    .page-hero-stats { display:flex; gap:2rem; margin-top:2rem; }
+    .ph-stat strong { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--accent); display:block; }
+    .ph-stat span { font-size:.72rem; color:var(--text-3); text-transform:uppercase; letter-spacing:1.5px; }
+
+    /* ── Layout ── */
+    .catalog-layout { display:grid; grid-template-columns:260px 1fr; gap:2rem; align-items:start; }
+    @media(max-width:900px) { .catalog-layout { grid-template-columns:1fr; } }
+
+    /* ── Sidebar Filter ── */
+    .filter-sidebar {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius); padding:1.5rem;
+      position:sticky; top:calc(var(--nav-h) + 1rem);
+      backdrop-filter:blur(12px);
+    }
+    .filter-sidebar h3 { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; margin-bottom:1.5rem; color:var(--text); }
+    .filter-group { margin-bottom:1.75rem; }
+    .filter-group-title { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:.75rem; }
+    .filter-option { display:flex; align-items:center; gap:10px; padding:7px 0; cursor:pointer; }
+    .filter-option input[type=checkbox] { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; }
+    .filter-option label { font-size:.85rem; color:var(--text-2); cursor:pointer; transition:color .2s; }
+    .filter-option:hover label { color:var(--accent); }
+    .price-range { width:100%; accent-color:var(--accent); }
+    .price-display { font-size:.8rem; color:var(--text-2); margin-top:.4rem; }
+    .sidebar-btn {
+      width:100%; padding:11px; background:var(--accent); color:#fff;
+      border-radius:8px; font-weight:700; font-size:.8rem; letter-spacing:1px;
+      text-transform:uppercase; border:none; cursor:pointer;
+      transition:background .3s; margin-top:.5rem;
+    }
+    .sidebar-btn:hover { background:#E64A19; }
+    .clear-btn {
+      width:100%; padding:9px; background:transparent; color:var(--text-3);
+      border:1px solid var(--border); border-radius:8px;
+      font-size:.8rem; cursor:pointer; margin-top:.5rem; transition:var(--transition);
+    }
+    .clear-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* ── Catalog Header ── */
+    .catalog-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+    .catalog-count { font-size:.85rem; color:var(--text-2); }
+    .catalog-count strong { color:var(--text); }
+    .sort-select {
+      padding:9px 14px; background:var(--bg-card); border:1px solid var(--border);
+      border-radius:8px; color:var(--text); font-family:'Montserrat',sans-serif;
+      font-size:.8rem; cursor:pointer; outline:none;
+    }
+    .sort-select:focus { border-color:var(--accent); }
+
+    /* ── Product Grid ── */
+    .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.25rem; }
+    .prod-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius); overflow:hidden;
+      transition:var(--transition); cursor:pointer;
+      position:relative; backdrop-filter:blur(10px);
+    }
+    .prod-card:hover { transform:translateY(-6px); border-color:var(--border-accent); box-shadow:0 20px 48px rgba(0,0,0,.5),var(--shadow-glow); }
+    .prod-img { aspect-ratio:1; overflow:hidden; background:var(--bg-3); position:relative; }
+    .prod-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .prod-card:hover .prod-img img { transform:scale(1.08); }
+    .prod-badges { position:absolute; top:10px; left:10px; display:flex; gap:4px; flex-wrap:wrap; }
+    .prod-badge { font-size:.58rem; font-weight:700; padding:3px 7px; border-radius:4px; background:rgba(18,18,18,.9); border:1px solid var(--border-accent); color:var(--accent); backdrop-filter:blur(6px); letter-spacing:.5px; }
+    .prod-wishlist { position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:50%; background:rgba(18,18,18,.85); display:flex; align-items:center; justify-content:center; color:var(--text-3); font-size:1rem; transition:var(--transition); border:1px solid var(--border); cursor:pointer; }
+    .prod-wishlist:hover, .prod-wishlist.active { color:#F44336; }
+    .prod-info { padding:1rem 1rem .5rem; }
+    .prod-brand { font-size:.65rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+    .prod-name { font-weight:700; font-size:.95rem; color:var(--text); margin-bottom:6px; line-height:1.3; }
+    .prod-type { font-size:.72rem; color:var(--text-3); margin-bottom:8px; }
+    .prod-stars { color:#FFD700; font-size:.75rem; letter-spacing:1px; }
+    .prod-stars span { color:var(--text-3); margin-left:4px; }
+    .prod-footer { display:flex; align-items:center; justify-content:space-between; padding:.75rem 1rem 1rem; }
+    .prod-price { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--accent); }
+    .prod-actions { display:flex; gap:.5rem; }
+    .btn-view { padding:8px 14px; border:1px solid var(--border); border-radius:7px; font-size:.72rem; font-weight:700; color:var(--text-2); transition:var(--transition); }
+    .btn-view:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-cart { padding:8px 14px; background:var(--accent); border-radius:7px; font-size:.72rem; font-weight:700; color:#fff; transition:var(--transition); border:none; cursor:pointer; }
+    .btn-cart:hover { background:#E64A19; }
+
+    /* ── No results ── */
+    .no-results { text-align:center; padding:4rem 2rem; color:var(--text-3); }
+    .no-results .nr-icon { font-size:3rem; margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="navbar-placeholder"></div>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-content">
+        <div class="page-hero-eyebrow">
+          <a href="index.html">Home</a><span>›</span><strong>Helmets</strong>
+        </div>
+        <h1>PREMIUM<br/><span class="accent">HELMETS</span></h1>
+        <p>ECE 22.06, DOT & BIS certified helmets from Mumbai's most trusted riding gear store. From full-face racers to touring modulars.</p>
+        <div class="page-hero-stats">
+          <div class="ph-stat"><strong>8+</strong><span>Brands</span></div>
+          <div class="ph-stat"><strong>ECE 22.06</strong><span>Certified</span></div>
+          <div class="ph-stat"><strong>₹950+</strong><span>Starting</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section class="section-pad" style="background:var(--bg);">
+    <div class="container">
+      <div class="catalog-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="filter-sidebar" id="filter-sidebar">
+          <h3>Filter</h3>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Certification</div>
+            <label class="filter-option"><input type="checkbox" id="f-ece" value="ECE 22.06" onchange="applyFilters()"/><label for="f-ece">ECE 22.06</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-dot" value="DOT" onchange="applyFilters()"/><label for="f-dot">DOT</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-bis" value="BIS" onchange="applyFilters()"/><label for="f-bis">BIS (ISI)</label></label>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Helmet Type</div>
+            <label class="filter-option"><input type="checkbox" id="f-ff" value="Full-Face" onchange="applyFilters()"/><label for="f-ff">Full-Face</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-mod" value="Modular" onchange="applyFilters()"/><label for="f-mod">Modular / Flip-Up</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-of" value="Open-Face" onchange="applyFilters()"/><label for="f-of">Open-Face</label></label>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Brand</div>
+            <label class="filter-option"><input type="checkbox" id="f-smk" value="SMK" onchange="applyFilters()"/><label for="f-smk">SMK</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-axor" value="AXOR" onchange="applyFilters()"/><label for="f-axor">AXOR</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-ls2" value="LS2" onchange="applyFilters()"/><label for="f-ls2">LS2</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-vega" value="VEGA" onchange="applyFilters()"/><label for="f-vega">VEGA</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-sb" value="STEELBIRD" onchange="applyFilters()"/><label for="f-sb">STEELBIRD</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-studs" value="STUDDS" onchange="applyFilters()"/><label for="f-studs">STUDDS</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-axxis" value="AXXIS" onchange="applyFilters()"/><label for="f-axxis">AXXIS</label></label>
+            <label class="filter-option"><input type="checkbox" id="f-rf" value="RED FOX" onchange="applyFilters()"/><label for="f-rf">RED FOX</label></label>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Max Price</div>
+            <input type="range" class="price-range" id="price-range" min="500" max="20000" value="20000" step="500" oninput="applyFilters();document.getElementById('price-val').textContent='₹'+Number(this.value).toLocaleString('en-IN')"/>
+            <div class="price-display">Up to: <strong id="price-val">₹20,000</strong></div>
+          </div>
+
+          <button class="clear-btn" onclick="clearFilters()">Clear All Filters</button>
+        </aside>
+
+        <!-- MAIN GRID -->
+        <div>
+          <div class="catalog-header">
+            <div class="catalog-count">Showing <strong id="result-count">0</strong> helmets</div>
+            <select class="sort-select" id="sort-select" onchange="applyFilters()">
+              <option value="default">Sort: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+          <div class="product-grid" id="product-grid"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="padding:2rem 0;">
+    <div class="container" style="text-align:center;">
+      <p style="color:var(--text-3);font-size:.8rem;">© 2025 Biker's Hub · <a href="index.html" style="color:var(--accent);">Home</a> · <a href="cart.html" style="color:var(--accent);">Cart</a></p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    BH.initPage('helmets');
+
+    const helmets = BH.getByCategory('helmet');
+    let filtered = [...helmets];
+
+    function applyFilters() {
+      const certs = ['ECE 22.06','DOT','BIS'].filter(c => document.getElementById('f-'+c.replace(' ','').replace('.','').toLowerCase())?.checked || document.getElementById('f-'+c.split(' ')[0].toLowerCase())?.checked);
+      const certChecked = [
+        document.getElementById('f-ece')?.checked && 'ECE 22.06',
+        document.getElementById('f-dot')?.checked && 'DOT',
+        document.getElementById('f-bis')?.checked && 'BIS',
+      ].filter(Boolean);
+      const typeChecked = [
+        document.getElementById('f-ff')?.checked && 'Full-Face',
+        document.getElementById('f-mod')?.checked && 'Modular',
+        document.getElementById('f-of')?.checked && 'Open-Face',
+      ].filter(Boolean);
+      const brandChecked = [
+        document.getElementById('f-smk')?.checked && 'SMK',
+        document.getElementById('f-axor')?.checked && 'AXOR',
+        document.getElementById('f-ls2')?.checked && 'LS2',
+        document.getElementById('f-vega')?.checked && 'VEGA',
+        document.getElementById('f-sb')?.checked && 'STEELBIRD',
+        document.getElementById('f-studs')?.checked && 'STUDDS',
+        document.getElementById('f-axxis')?.checked && 'AXXIS',
+        document.getElementById('f-rf')?.checked && 'RED FOX',
+      ].filter(Boolean);
+      const maxPrice = parseInt(document.getElementById('price-range')?.value || 20000);
+      const sort = document.getElementById('sort-select')?.value || 'default';
+
+      filtered = helmets.filter(h => {
+        if (certChecked.length && !certChecked.some(c => h.cert.includes(c))) return false;
+        if (typeChecked.length && !typeChecked.includes(h.type)) return false;
+        if (brandChecked.length && !brandChecked.includes(h.brand)) return false;
+        if (h.price > maxPrice) return false;
+        return true;
+      });
+
+      if (sort === 'price-asc')  filtered.sort((a,b) => a.price - b.price);
+      if (sort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+      if (sort === 'rating')     filtered.sort((a,b) => b.rating - a.rating);
+
+      renderGrid(filtered);
+    }
+
+    function clearFilters() {
+      document.querySelectorAll('#filter-sidebar input[type=checkbox]').forEach(cb => cb.checked = false);
+      document.getElementById('price-range').value = 20000;
+      document.getElementById('price-val').textContent = '₹20,000';
+      document.getElementById('sort-select').value = 'default';
+      applyFilters();
+    }
+
+    function renderGrid(products) {
+      const grid = document.getElementById('product-grid');
+      document.getElementById('result-count').textContent = products.length;
+
+      if (!products.length) {
+        grid.innerHTML = `<div class="no-results" style="grid-column:1/-1"><div class="nr-icon">🔍</div><p>No helmets match your filters.</p><button class="sidebar-btn" style="width:auto;padding:10px 24px;margin-top:1rem" onclick="clearFilters()">Clear Filters</button></div>`;
+        return;
+      }
+
+      grid.innerHTML = products.map(p => `
+        <div class="prod-card" onclick="location.href='product.html?id=${p.id}'">
+          <div class="prod-img">
+            <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+            <div class="prod-badges">${p.cert.map(c=>`<span class="prod-badge">${c}</span>`).join('')}</div>
+            <button class="prod-wishlist" onclick="event.stopPropagation();this.classList.toggle('active');this.textContent=this.classList.contains('active')?'♥':'♡'" aria-label="Wishlist">♡</button>
+          </div>
+          <div class="prod-info">
+            <div class="prod-brand">${p.brand}</div>
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-type">${p.type}</div>
+            <div class="prod-stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))} <span>(${p.reviews})</span></div>
+          </div>
+          <div class="prod-footer">
+            <div class="prod-price">${p.display}</div>
+            <div class="prod-actions">
+              <a class="btn-view" href="product.html?id=${p.id}" onclick="event.stopPropagation()">View</a>
+              <button class="btn-cart" onclick="event.stopPropagation();quickAdd('${p.id}',this)">+ Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function quickAdd(id, btn) {
+      BH.addToCart(id);
+      const orig = btn.textContent;
+      btn.textContent = '✓ Added';
+      btn.style.background = '#4CAF50';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1400);
+    }
+
+    // Init
+    applyFilters();
+  </script>
+</body>
+</html>
